@@ -38,7 +38,7 @@ void countCorrectness(std::string reference, std::string toCheck, unsigned int s
 
 int main()
 {
-	const std::string orig = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}\n~";
+	const std::string orig = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~\n@";
 	const std::string key = "key";
 	XORcipher th = XORcipher();
 	testCorrectness(orig, th.XORGex(key, th.XORstr(key, orig)));
