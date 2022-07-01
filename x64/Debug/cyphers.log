@@ -1,0 +1,5 @@
+﻿  cyphers.cpp
+C:\Users\user\source\repos\cyphers\cyphers\cyphers.cpp(16,49): warning C4244: '+=': conversion from 'double' to 'unsigned char', possible loss of data
+  Enigma.cpp
+  Generating Code...
+  cyphers.vcxproj -> C:\Users\user\source\repos\cyphers\x64\Debug\cyphers.exe
