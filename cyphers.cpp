@@ -1,5 +1,6 @@
 ﻿#include <windows.h>
 #include "XORcipher.h"
+#include "stringTesting.h"
 char toSameCase(char toTransform, char toPickFrom) {
 	return toupper(toPickFrom) == toPickFrom ? toupper(toTransform) : tolower(toTransform);
 };
