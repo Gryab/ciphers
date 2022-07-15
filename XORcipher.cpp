@@ -1,22 +1,22 @@
 #include "XORcipher.h"
 #include "alg.h"
 
-bool* XORcipher::toBits(unsigned char ch) {
-	bool* res = new bool[8];
+std::vector<bool> XORcipher::toBits(unsigned char ch) {
+	std::vector<bool> res{0, 0, 0, 0, 0, 0, 0, 0};
 	for (char i = -1; ++i < 8; ch >>= 1)res[7 - i] = ch % 2;
 	return res;
 };
-bool* XORcipher::XOR(bool bin1[8], bool bin2[8]) {
+std::vector<bool> XORcipher::XOR(std::vector<bool> bin1, std::vector<bool> bin2) {
 	char i = -1;
 	for (; ++i < 8;)bin1[i] = bin1[i] ^ bin2[i];
 	return bin1;
 };
-char XORcipher::fromBits(bool bin[8]) {
+char XORcipher::fromBits(std::vector<bool> bin) {
 	unsigned char ch = bin[7], i = -1;
 	for (; ++i < 7;) ch += (1 << 7 - i) * bin[i];
 	return ch;
 };
-std::string XORcipher::toGex(bool bin[8]) {
+std::string XORcipher::toGex(std::vector<bool> bin) {
 	std::string res = "!!";
 	unsigned char ch = fromBits(bin);
 	res[0] += ch % 16;
