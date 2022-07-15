@@ -1,19 +1,24 @@
 #pragma once
 #include <string>
-#include <iterator>
 #include <vector>
-#include <iostream>
 #include <bitset>
-#include "alg.h"
 
-std::bitset<16> toBits(wchar_t ch) {
-	return std::bitset<16>(ch);
+std::vector<bool> toBits(wchar_t ch) {
+	std::vector<bool> res{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+	for (int i = -1; ++i < 16; ch /= 2)res[i] = ch % 2;
+	return res;
 }
-std::bitset<16> XOR(std::bitset<16> bin1, std::bitset<16> bin2) {
-	return bin1 ^ bin2;
+std::vector<bool> XOR(std::vector<bool> bin1, std::vector<bool> bin2) {
+	for (int i = -1; ++i < 16;) bin1[i] = bin1[i] ^ bin2[i];
+	return bin1;
 }
-wchar_t fromBits(std::bitset<16> bin) {
-	return (wchar_t)bin.to_ulong();
+wchar_t fromBits(std::vector<bool> bin) {
+	wchar_t res = 0;
+	for (char i = -1; ++i < 16;)
+	{
+		res += (bin[i] << 16 - i);
+	}
+	return res;
 }
 
 std::wstring XOR(std::wstring phrase, std::wstring key = L"key") {
