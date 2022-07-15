@@ -1,4 +1,6 @@
 ﻿#include <windows.h>
+#include <fcntl.h>
+#include <io.h>
 #include "XORcipher.h"
 #include "stringTesting.h"
 char toSameCase(char toTransform, char toPickFrom) {
@@ -12,9 +14,6 @@ std::string caesar(int step, std::string phrase, unsigned int startFrom = -1) {
 
 int main()
 {
-	const std::wstring orig = L" !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~\n@";
-	const std::wstring key = L"key";
-	XORcipher th = XORcipher();
-	testCorrectness(orig, th.XORGex(key, th.XORstr(key, orig)));
-	std::wcout << '\n' << th.XORstr(key, orig);
+	_setmode(_fileno(stdout), _O_U16TEXT);
+	Run_XOR_Test();
 };
