@@ -1,8 +1,6 @@
 ﻿#pragma once
 #include <vector>
 
-
-
 std::vector<bool> toBits(wchar_t ch) {
 	std::vector<bool> res{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 	for (char i = -1; ++i < 16; ch /= 2)res[15 - i] = ch % 2;

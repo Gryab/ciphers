@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include <cassert>
+
 void success(HANDLE hConsole) {
 	SetConsoleTextAttribute(hConsole, 2);
 	std::wcout << L"\nnoice!";
