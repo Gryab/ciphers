@@ -1,9 +1,13 @@
 ﻿#pragma once
 #include <vector>
 
+const char lastPosOfBit = 15;
+const unsigned short gex0 = 1024U;
+const unsigned short gexBase = 256U;
+
 std::vector<bool> toBits(wchar_t ch) {
 	std::vector<bool> res{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-	for (char i = -1; ++i < 16; ch /= 2)res[15 - i] = ch % 2;
+	for (char i = -1; ++i < lastPosOfBit + 1; ch >>= 1)res[lastPosOfBit - i] = ch % 2;
 	return res;
 }
 
@@ -13,58 +17,140 @@ std::vector<bool> XORbin(std::vector<bool> bin1, std::vector<bool> bin2) {
 }
 
 wchar_t fromBits(std::vector<bool> bin) {
-	wchar_t res = bin[15];
-	for (char i = -1; ++i < 15;) res += bin[i] << (15 - i);
+	wchar_t res = bin[lastPosOfBit];
+	for (char i = -1; ++i < lastPosOfBit;) res += bin[i] << (lastPosOfBit - i);
 	return res;
-}
-
-wchar_t fromGex(std::wstring str) {
-	return (str[1] - L'Ѐ') * 256 + str[0] - L'Ѐ';
 }
 
 class GEX
 {
 private:
-	std::wstring value = L"ЀЀ";
+
+	wchar_t Gvalue[3]{gex0, gex0};
+
 public:
+
 	GEX(wchar_t ch) {
-		value[0] += ch % 256;
-		value[1] += ch / 256;
+		Gvalue[0] += ch % gexBase, Gvalue[1] += ch / gexBase;
+	}
+
+	GEX(std::wstring Fvalue) {
+		Gvalue[0] = Fvalue[0], Gvalue[1] = Fvalue[1];
+	}
+
+	GEX(std::vector<bool> bin) {
+		wchar_t ch = (wchar_t)GEX(fromBits(bin));
+		Gvalue[0] += ch % gexBase, Gvalue[1] += ch / gexBase;
 	}
 
 	operator std::wstring() {
-		return value;
+		return Gvalue;
 	}
 
 	operator wchar_t() {
-		return fromGex(value);
+		return (Gvalue[1] - gex0) * gexBase + Gvalue[0] - gex0;
+	}
+
+	GEX operator^ (GEX another) {
+		return GEX(fromBits(XORbin(toBits(*this), toBits(another))));
+	}
+
+	GEX operator^= (GEX another) {
+		*this = *this ^ another;
+		return *this;
 	}
 };
 
-std::vector<GEX> XORstrToGexAsVec(std::wstring phrase, std::wstring key = L"key") {
-	std::vector<GEX> vec;
+class cwstring
+{
+public:
+	cwstring(std::wstring strT = L"") { str = strT; };
+
+	wchar_t at(unsigned long long i) { return str[i%str.length()]; }
+
+	size_t size() { return str.size(); }
+	size_t length() { return str.length(); }
+	
+	std::wstring substr(size_t pos, size_t len) { return str.substr(pos, len); }
+
+	std::wstring::iterator begin() { return str.begin(); }
+	std::wstring::iterator end() { return str.end(); }
+
+	cwstring clear() { 
+		str.clear();
+		return *this; 
+	}
+	cwstring erase(size_t pos = 0, size_t len = 0) {
+		str.erase(pos, len);
+		return *this;
+	}
+
+	operator std::wstring() { return str; }
+
+	cwstring operator= (std::wstring another) {
+		str = another;
+		return *this;
+	}
+
+	cwstring operator= (wchar_t another) {
+		clear();
+		str[0] = another;
+		return *this;
+	}
+
+	cwstring operator= (cwstring another) {
+		str = (std::wstring)another;
+		return *this;
+	}
+
+	cwstring operator+ (std::wstring another) { return cwstring(str + another); }
+
+	cwstring operator+ (wchar_t another) { return cwstring(str + another); }
+
+	cwstring operator+ (cwstring another) { return cwstring(str + another.str); }
+
+	cwstring operator+= (std::wstring another) {
+		str += another;
+		return *this;
+	}
+	
+	cwstring operator+= (wchar_t another) {
+		str += another;
+		return *this;
+	}
+
+	cwstring operator+= (cwstring another) {
+		str += another.str;
+		return *this;
+	}
+private:
+	std::wstring str;
+};
+
+std::vector<GEX> XORstrToGexAsVec(cwstring phrase, cwstring key = cwstring(L"key")) {
+	std::vector<GEX> gex;
 	unsigned long long i = -1;
-	while (phrase.size() > ++i) vec.push_back(GEX(fromBits(XORbin(toBits(phrase[i]), toBits(key[i % key.length()])))));
-	return vec;
+	while (phrase.size() > ++i) gex.push_back(GEX(phrase.at(i)) ^ GEX(key.at(i)));
+	return gex;
 }
 
-std::wstring XORstrToGexAsStr(std::wstring phrase, std::wstring key = L"key") {
-	std::wstring vec = L"";
+std::wstring XORstrToGexAsStr(cwstring phrase, cwstring key = cwstring(L"key")) {
+	cwstring gex;
 	unsigned long long i = -1;
-	while (phrase.size() > ++i) vec += (std::wstring)GEX(fromBits(XORbin(toBits(phrase[i]), toBits(key[i % key.length()]))));
-	return vec;
+	while (phrase.size() > ++i) gex += (std::wstring)(GEX(phrase.at(i)) ^ GEX(key.at(i)));
+	return gex;
 }
 
-std::wstring XORgexToStr(std::wstring phrase, std::wstring key = L"key") {
-	std::wstring res = L"";
+std::wstring XORgexToStr(cwstring phrase, cwstring key = cwstring(L"key")) {
+	cwstring str;
 	unsigned long long i = -1;
-	while ((phrase.size() >> 1) > ++i) res += (wchar_t)fromBits(XORbin(toBits(fromGex(phrase.substr(i << 1, 2))), toBits(key[i % key.length()])));
-	return (std::wstring)res;
+	while ((phrase.size() >> 1) > ++i) str += (wchar_t)GEX(phrase.substr(i << 1, 2)) ^ GEX(key.at(i));
+	return (std::wstring)str;
 }
 
-std::wstring XORgexToStr(std::vector<GEX> vec, std::wstring key = L"key") {
-	std::wstring res = L"";
+std::wstring XORgexToStr(std::vector<GEX> vec, cwstring key = cwstring(L"key")) {
+	cwstring str;
 	unsigned long long i = -1;
-	while (vec.size() > ++i) res += (wchar_t)fromBits(XORbin(toBits(vec.at(i)), toBits(key[i % key.length()])));
-	return (std::wstring)res;
+	while (vec.size() > ++i) str += (wchar_t)(vec.at(i) ^ GEX(key.at(i)));
+	return (std::wstring)str;
 }
