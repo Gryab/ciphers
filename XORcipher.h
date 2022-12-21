@@ -5,9 +5,10 @@ class Encryptor
 {
 public:
 	Encryptor(std::wstring key);
+	Encryptor changeKey(std::wstring key);
 	Encryptor changeIdentifier(std::wstring identifier);
 
-	std::wstring cipher(std::wstring phrase);
+	std::wstring cipherXOR(std::wstring phrase);
 	
 	std::vector<GEX> XORstrToGexAsVec(cwstring phrase);
 private:
@@ -16,7 +17,7 @@ private:
 	uint64_t iterator = -1;
 
 	std::wstring getIdentifier(std::wstring phrase);
-	std::wstring removeIdentifier(std::wstring phrase);
+	std::wstring withoutIdentifier(std::wstring phrase);
 
 	bool isGex(std::wstring phrase);
 

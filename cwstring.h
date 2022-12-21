@@ -9,5 +9,7 @@ public:
 	cwstring(wchar_t wchar) : std::wstring(&wchar) {};
 	cwstring(std::vector<GEX> vec);
 
+	operator uint64_t();
+
 	wchar_t at(uint64_t k);
 };

@@ -1,13 +1,11 @@
-﻿#include <windows.h>
-#include <fcntl.h>
+﻿#include <fcntl.h>
 #include <io.h>
-#include <iostream>
 #include <cctype>
-#include "XORcipher.h"
-#include "stringTesting.h"
+#include "EncryptionTester.h"
 
 int main()
 {
 	if (!_setmode(_fileno(stdout), _O_U16TEXT)) return 0;
-	Run_XOR_Test();
+	EncryptionTester a = EncryptionTester();
+	a.Run_Test();
 };

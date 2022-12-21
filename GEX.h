@@ -5,7 +5,7 @@
 class GEX
 {
 private:
-	const uint16_t gex0 = 1024U;
+	const wchar_t gex0 = 1024U;
 	const uint16_t gexBase = 256U;
 	wchar_t Gvalue[3]{ gex0, gex0 };
 public:
