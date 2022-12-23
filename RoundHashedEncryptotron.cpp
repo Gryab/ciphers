@@ -1,23 +1,22 @@
 #include "RoundHashedEncryptotron.h"
+//==============================constructors and setters========================================
+RoundHashedEncryptotron::RoundHashedEncryptotron(std::wstring key) { changeKey(key); };
 
 RoundHashedEncryptotron RoundHashedEncryptotron::changeKey(std::wstring sKey) {
-	transformKey(sKey);
-	obj.changeKey(key);
+	temp_key = sKey;
 	return *this;
 };
 
-void RoundHashedEncryptotron::transformKey(std::wstring sKey) {
-	while (key.length() < str.length()) {
-		key = obj.changeKey(key).cipherXOR(sKey + key).substr(1); 
-	};
+RoundHashedEncryptotron RoundHashedEncryptotron::changeIdentifier(std::wstring identifier) {
+	gexIdentifier = identifier;
+	return *this;
 };
 
-RoundHashedEncryptotron RoundHashedEncryptotron::setStr(std::wstring phrase) {
+//==============encryption rounds===================================================
+
+std::wstring RoundHashedEncryptotron::encrypt(std::wstring phrase, uint64_t rounds) {
 	str = phrase;
-	return *this;
-};
-
-std::wstring RoundHashedEncryptotron::encrypt(uint64_t rounds) {
+	useKey();
 	str = obj.caesar(str);
 	return cycleThrough(rounds);
 };
@@ -33,6 +32,38 @@ void RoundHashedEncryptotron::cycle() {
 	str = obj.caesar(obj.cipherXOR(str));
 };
 
-void RoundHashedEncryptotron::alternateFunctions() {
-	position ^= 1;
+//==============================key transformation==========================
+
+RoundHashedEncryptotron RoundHashedEncryptotron::useKey() {
+	transformKey();
+	obj.changeKey(key);
+	return *this;
+};
+
+void RoundHashedEncryptotron::transformKey() {
+	while (key.length() < requieredKeyLength()) {
+		cycleKey();
+	};
+};
+
+uint64_t RoundHashedEncryptotron::requieredKeyLength() {
+	return isGex() ? withoutIdentifier().length() / 2 : str.length();
+};
+
+void RoundHashedEncryptotron::cycleKey() {
+	key = obj.changeKey(key).cipherXOR(temp_key + key).substr(1);
+};
+
+//============================GEX=======================================
+
+bool RoundHashedEncryptotron::isGex() {
+	return (getIdentifier() == gexIdentifier);
+};
+
+std::wstring RoundHashedEncryptotron::getIdentifier() {
+	return str.substr(0, gexIdentifier.size());
+};
+
+std::wstring RoundHashedEncryptotron::withoutIdentifier() {
+	return str.substr(gexIdentifier.size());
 };

@@ -50,7 +50,7 @@ std::wstring EncryptionTester::genExplanatoryStr() {
 };
 
 void EncryptionTester::testInstance() {
-	assert(showCorrectness(obj.cipherXOR(obj.cipherXOR(strs[selectedStr]))));
+	assert(showCorrectness(obj.encrypt(obj.encrypt(strs[selectedStr], 7), 7)));
 };
 
 //-----------------------(can be removed)----------------------

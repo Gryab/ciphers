@@ -23,7 +23,7 @@ private:
 
 	void incrementStrAndKeyCounters();
 
-	Encryptor obj = Encryptor(keys[0]);
+	RoundHashedEncryptotron obj = RoundHashedEncryptotron(keys[0]);
 
 	bool isCharCorrect(wchar_t toCheck, UINT32 lookAt);
 

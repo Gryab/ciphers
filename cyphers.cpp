@@ -9,14 +9,11 @@ int main()
 	if (!_setmode(_fileno(stdout), _O_U16TEXT)) return 0;
 	EncryptionTester a = EncryptionTester();
 	a.Run_Test();
-	/*RoundHashedEncryptotron a = RoundHashedEncryptotron();
-	RoundHashedEncryptotron b = RoundHashedEncryptotron();
+	/*RoundHashedEncryptotron a = RoundHashedEncryptotron(L"key");
+	RoundHashedEncryptotron b = RoundHashedEncryptotron(L"key");
 	Encryptor c = Encryptor(L"key");
-	a.setStr(L"abc");
 	a.changeKey(L"key");
-	//b.setStr(a.encrypt(7));
 	b.changeKey(L"key");
-	std::wcout << a.setStr(a.encrypt(7)).encrypt(7);
-	a.setStr(L"abc");
-	std::wcout << a.encrypt(7);*/
+	std::wcout << a.encrypt(a.encrypt(L"abc", 7), 7);
+	std::wcout << "\n" << b.encrypt(a.encrypt(L"abc", 7), 7);*/
 };
