@@ -1,7 +1,7 @@
 #include "GEX.h"
 //----------------------------Constructors-------------------------------------
 GEX::GEX(wchar_t ch) { 
-	Gvalue[0] += ch % gexBase, Gvalue[1] += ch / gexBase; 
+	Gvalue[0] += ch % gexBase, Gvalue[1] += ch / gexBase;
 };
 
 GEX::GEX(std::wstring Fvalue) { 
@@ -22,7 +22,7 @@ GEX GEX::operator= (GEX another) {
 };
 
 GEX GEX::operator^ (GEX another) {
-	return GEX((std::bitset<16>(*this) ^ std::bitset<16>(another)).to_ulong());
+	return GEX((uint32_t) * this ^ (uint32_t)another);
 };
 
 GEX GEX::operator^= (GEX another) {

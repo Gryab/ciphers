@@ -23,8 +23,5 @@ private:
 	void cycle();
 	void cycleKey();
 	std::wstring cycleThrough(uint64_t rounds);
-	bool isGex();
-	std::wstring getIdentifier();
-	std::wstring withoutIdentifier();
 	RoundHashedEncryptotron useKey();
 };
