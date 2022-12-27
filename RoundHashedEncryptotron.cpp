@@ -49,7 +49,7 @@ void RoundHashedEncryptotron::transformKey() {
 };
 
 uint64_t RoundHashedEncryptotron::requieredKeyLength() {
-	return IDmanip::hasID(str, gexIdentifier) ? IDmanip::noID(str, gexIdentifier).length() >> 1 : str.length();
+	return hasID(str, gexIdentifier) ? noID(str, gexIdentifier).length() >> 1 : str.length();
 };
 
 void RoundHashedEncryptotron::cycleKey() {

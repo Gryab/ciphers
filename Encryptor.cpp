@@ -17,7 +17,7 @@ Encryptor Encryptor::changeIdentifier(std::wstring identifier) {
 
 std::wstring Encryptor::cipherXOR(std::wstring phrase) { 
 	iterator = -1; 
-	return IDmanip::hasID(phrase, gexIdentifier) ? xorGEXToStr(IDmanip::noID(phrase, gexIdentifier)) : xorStrToGexAsStr(phrase);
+	return hasID(phrase, gexIdentifier) ? xorGEXToStr(noID(phrase, gexIdentifier)) : xorStrToGexAsStr(phrase);
 };
 
 std::vector<GEX> Encryptor::xorStrToGexAsVec(cwstring phrase) {
@@ -54,5 +54,5 @@ cwstring Encryptor::caesarGEXToStr(cwstring phrase) {
 
 std::wstring Encryptor::caesar(std::wstring phrase) {
 	iterator = -1;
-	return IDmanip::hasID(phrase, gexIdentifier) ? caesarGEXToStr(IDmanip::noID(phrase, gexIdentifier)) : caesarStrToGexAsStr(phrase);
+	return hasID(phrase, gexIdentifier) ? caesarGEXToStr(noID(phrase, gexIdentifier)) : caesarStrToGexAsStr(phrase);
 };

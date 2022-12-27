@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include <cassert>
 #include <windows.h>
-#include <iostream>
+#include "logger.h"
 #include "RoundHashedEncryptotron.h"
 
 class EncryptionTester
@@ -25,7 +25,13 @@ private:
 
 	RoundHashedEncryptotron obj = RoundHashedEncryptotron(keys[0]);
 
-	bool isCharCorrect(wchar_t toCheck, UINT32 lookAt);
+	bool charCorrectness(wchar_t toCheck, UINT32 lookAt);
+
+	bool isCharEqual(wchar_t toCheck, UINT32 lookAt);
+
+	bool correct();
+
+	bool incorrect();
 
 	void setTextColour(UINT8 colour);
 	

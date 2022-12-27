@@ -5,27 +5,34 @@ void EncryptionTester::setTextColour(UINT8 colour = 7) {
 };
 //----------------------------------matching the strings--------------------------------------
 bool EncryptionTester::showCorrectness(std::wstring toCheck, UINT32 startFrom = -1) {
-
 	bool flag = 1;
 	while (++startFrom < toCheck.length()) {
-		flag = isCharCorrect(toCheck.at(startFrom), startFrom);
-		std::wcout << toCheck.at(startFrom);
+		flag = charCorrectness(toCheck.at(startFrom), startFrom);
+		logger::log(toCheck.at(startFrom));
 	};
 	setTextColour();
-	std::wcout << '\n' << strs[selectedStr] << '\n';
-	setTextColour();
+	logger::log(L'\n' + strs[selectedStr] + L'\n');
 	return flag;
 };
 
-bool EncryptionTester::isCharCorrect(wchar_t toCheck, UINT32 lookAt) {
-	if (toCheck != strs[selectedStr].at(lookAt))
-	{
-		setTextColour(12);
-		return 0;
-	};
+bool EncryptionTester::charCorrectness(wchar_t toCheck, UINT32 lookAt) {
+	return isCharEqual(toCheck, lookAt) ? correct() : incorrect();
+};
+
+bool EncryptionTester::isCharEqual(wchar_t toCheck, UINT32 lookAt) {
+	return strs[selectedStr].at(lookAt) == toCheck;
+};
+
+bool EncryptionTester::correct() {
 	setTextColour(2);
 	return 1;
 };
+
+bool EncryptionTester::incorrect() {
+	setTextColour(12);
+	return 0;
+};
+
 //--------------------------------------------different testing conditions logic-------------------------------------------
 void EncryptionTester::Run_Test() {
 	do {
@@ -40,7 +47,7 @@ void EncryptionTester::incrementStrAndKeyCounters() {
 };
 
 void EncryptionTester::testWithOtherKey() {
-	std::wcout << genExplanatoryStr();
+	logger::log(genExplanatoryStr());
 	obj.changeKey(keys[selectedKey]);
 	testInstance();
 };
@@ -56,6 +63,6 @@ void EncryptionTester::testInstance() {
 //-----------------------(can be removed)----------------------
 void EncryptionTester::success() {
 	setTextColour(3);
-	std::wcout << L"\nnoice!";
+	logger::log(L"\nnoice!");
 	setTextColour();
 };
