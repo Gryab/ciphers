@@ -1,15 +1,13 @@
 ﻿#pragma once
 #include <cassert>
 #include <windows.h>
-#include "logger.h"
 #include "RoundHashedEncryptotron.h"
 
 class EncryptionTester
 {
 public:
-	EncryptionTester() { return; };
 	void Run_Test();
-	bool showCorrectness(std::wstring toCheck, UINT32 startFrom);
+	bool showCorrectness(const std::wstring &toCheck, UINT64 startFrom);
 private:
 	const HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	const std::wstring strs[3] = {L" !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|};~@ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïð",
@@ -23,17 +21,17 @@ private:
 
 	void incrementStrAndKeyCounters();
 
-	RoundHashedEncryptotron obj = RoundHashedEncryptotron(keys[0]);
+	IEncryptor &obj = *(IEncryptor*)(new RoundHashedEncryptotron(keys[0]));
 
-	bool charCorrectness(wchar_t toCheck, UINT32 lookAt);
+	bool charCorrectness(const wchar_t &toCheck, const UINT64 &lookAt);
 
-	bool isCharEqual(wchar_t toCheck, UINT32 lookAt);
+	bool isCharEqual(const wchar_t& toCheck, const UINT64& lookAt);
 
 	bool correct();
 
 	bool incorrect();
 
-	void setTextColour(UINT8 colour);
+	void setTextColour(const UINT8 &colour);
 	
 	void testInstance();
 

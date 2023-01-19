@@ -8,8 +8,8 @@ private:
 	const uint16_t gexBase = 256U;
 	wchar_t Gvalue[3]{ gex0, gex0 };
 public:
-	GEX(wchar_t ch);
-	GEX(std::wstring Fvalue);
+	GEX(const wchar_t &ch);
+	GEX(const std::wstring &Fvalue);
 
 	operator std::wstring();
 	operator wchar_t();

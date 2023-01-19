@@ -2,28 +2,28 @@
 
 //==============================constructors and setters========================================
 
-RoundHashedEncryptotron::RoundHashedEncryptotron(std::wstring key) { changeKey(key); };
+RoundHashedEncryptotron::RoundHashedEncryptotron(const std::wstring& key) { changeKey(key); };
 
-RoundHashedEncryptotron RoundHashedEncryptotron::changeKey(std::wstring sKey) {
+void* RoundHashedEncryptotron::changeKey(const std::wstring &sKey) {
 	temp_key = sKey;
-	return *this;
+	return this;
 };
 
-RoundHashedEncryptotron RoundHashedEncryptotron::changeIdentifier(std::wstring identifier) {
+void* RoundHashedEncryptotron::changeIdentifier(const std::wstring& identifier) {
 	gexIdentifier = identifier;
-	return *this;
+	return this;
 };
 
 //==============encryption rounds===================================================
 
-std::wstring RoundHashedEncryptotron::encrypt(std::wstring phrase, uint64_t rounds) {
+std::wstring RoundHashedEncryptotron::encrypt(const std::wstring& phrase, uint64_t rounds) {
 	str = phrase;
 	useKey();
 	str = obj.caesar(str);
 	return cycleThrough(rounds);
 };
 
-std::wstring RoundHashedEncryptotron::cycleThrough(uint64_t rounds) {
+std::wstring RoundHashedEncryptotron::cycleThrough(uint64_t &rounds) {
 	while (--rounds) {
 		cycle();
 	};
@@ -53,5 +53,5 @@ uint64_t RoundHashedEncryptotron::requieredKeyLength() {
 };
 
 void RoundHashedEncryptotron::cycleKey() {
-	key = obj.changeKey(key).cipherXOR(temp_key + key).substr(1);
+	key = (*((Encryptor*)(obj.changeKey(key)))).cipherXOR(temp_key + key).substr(1);
 };

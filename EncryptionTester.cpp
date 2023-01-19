@@ -1,25 +1,25 @@
 ﻿#include "EncryptionTester.h"
 //------------------------console colour changer------------------------
-void EncryptionTester::setTextColour(UINT8 colour = 7) {
+void EncryptionTester::setTextColour(const UINT8 &colour = 7) {
 	SetConsoleTextAttribute(hConsole, colour);
 };
 //----------------------------------matching the strings--------------------------------------
-bool EncryptionTester::showCorrectness(std::wstring toCheck, UINT32 startFrom = -1) {
+bool EncryptionTester::showCorrectness(const std::wstring &toCheck, UINT64 startFrom = -1) {
 	bool flag = 1;
 	while (++startFrom < toCheck.length()) {
 		flag = charCorrectness(toCheck.at(startFrom), startFrom);
-		logger::log(toCheck.at(startFrom));
+		wprintf(L"%c",toCheck.at(startFrom));
 	};
 	setTextColour();
-	logger::log(L'\n' + strs[selectedStr] + L'\n');
+	wprintf(L"\n%ls\n", (strs[selectedStr]).c_str());
 	return flag;
 };
 
-bool EncryptionTester::charCorrectness(wchar_t toCheck, UINT32 lookAt) {
+bool EncryptionTester::charCorrectness(const wchar_t& toCheck, const UINT64& lookAt) {
 	return isCharEqual(toCheck, lookAt) ? correct() : incorrect();
 };
 
-bool EncryptionTester::isCharEqual(wchar_t toCheck, UINT32 lookAt) {
+bool EncryptionTester::isCharEqual(const wchar_t& toCheck, const UINT64& lookAt) {
 	return strs[selectedStr].at(lookAt) == toCheck;
 };
 
@@ -47,7 +47,7 @@ void EncryptionTester::incrementStrAndKeyCounters() {
 };
 
 void EncryptionTester::testWithOtherKey() {
-	logger::log(genExplanatoryStr());
+	wprintf(L"%ls", genExplanatoryStr().c_str());
 	obj.changeKey(keys[selectedKey]);
 	testInstance();
 };
@@ -63,6 +63,6 @@ void EncryptionTester::testInstance() {
 //-----------------------(can be removed)----------------------
 void EncryptionTester::success() {
 	setTextColour(3);
-	logger::log(L"\nnoice!");
+	wprintf(L"\nnoice!");
 	setTextColour();
 };

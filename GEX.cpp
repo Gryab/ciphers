@@ -1,10 +1,10 @@
 #include "GEX.h"
 //----------------------------Constructors-------------------------------------
-GEX::GEX(wchar_t ch) { 
+GEX::GEX(const wchar_t &ch) { 
 	Gvalue[0] += ch % gexBase, Gvalue[1] += ch / gexBase;
 };
 
-GEX::GEX(std::wstring Fvalue) { 
+GEX::GEX(const std::wstring &Fvalue) { 
 	Gvalue[0] = Fvalue[0], Gvalue[1] = Fvalue[1]; 
 };
 //----------------------------------Casts-------------------------------------

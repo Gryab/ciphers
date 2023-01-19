@@ -1,16 +1,16 @@
 #pragma once
 #include "Encryptor.h"
 
-class RoundHashedEncryptotron
+class RoundHashedEncryptotron : public IEncryptor
 {
 public:
-	RoundHashedEncryptotron(std::wstring key);
+	RoundHashedEncryptotron(const std::wstring& key);
 
-	RoundHashedEncryptotron changeKey(std::wstring sKey);
+	void* changeKey(const std::wstring &sKey) override;
 
-	RoundHashedEncryptotron changeIdentifier(std::wstring identifier);
+	void* changeIdentifier(const std::wstring& identifier) override;
 
-	std::wstring encrypt(std::wstring phrase, uint64_t rounds);
+	std::wstring encrypt(const std::wstring& phrase, uint64_t rounds) override;
 
 private:
 	uint64_t requieredKeyLength();
@@ -22,6 +22,6 @@ private:
 	void transformKey();
 	void cycle();
 	void cycleKey();
-	std::wstring cycleThrough(uint64_t rounds);
+	std::wstring cycleThrough(uint64_t& rounds);
 	RoundHashedEncryptotron useKey();
 };

@@ -3,15 +3,16 @@
 
 //------------------key and constructor-------------------------------------------------------------
 
-Encryptor::Encryptor(std::wstring key = L"key") {
+Encryptor::Encryptor(const std::wstring& key = L"key") {
 	myKey = (cwstring)key;
 };
-Encryptor Encryptor::changeKey(std::wstring key) { 
-	myKey = (cwstring)key; 
-	return *this; 
+void* Encryptor::changeKey(const std::wstring& key){
+	myKey = (cwstring)key;
+	return this;
 };
-Encryptor Encryptor::changeIdentifier(std::wstring identifier) {
-	gexIdentifier = identifier; return *this;
+void* Encryptor::changeIdentifier(const std::wstring& identifier){
+	gexIdentifier = identifier;
+	return this;
 };
 //==================================================Enciphering in XOR=============================================================================
 
@@ -56,3 +57,5 @@ std::wstring Encryptor::caesar(std::wstring phrase) {
 	iterator = -1;
 	return hasID(phrase, gexIdentifier) ? caesarGEXToStr(noID(phrase, gexIdentifier)) : caesarStrToGexAsStr(phrase);
 };
+
+std::wstring Encryptor::encrypt(const std::wstring& phrase, uint64_t encType = XOR) { return encType == 1 ? cipherXOR(phrase) : caesar(phrase); };

@@ -2,17 +2,22 @@
 #include <bitset>
 #include <iostream>
 #include "IDmanip.h"
+#include "IEncryptor.h"
 
-class Encryptor
+class Encryptor : public IEncryptor
 {
 public:
-	Encryptor(std::wstring key);
-	Encryptor changeKey(std::wstring key);
-	Encryptor changeIdentifier(std::wstring identifier);
+	enum encryptionType {XOR = 1, CAESAR = 2};
+
+	Encryptor(const std::wstring& key);
+	void* changeKey(const std::wstring& key) override;
+	void* changeIdentifier(const std::wstring& identifier) override;
 
 	std::wstring cipherXOR(std::wstring phrase);
 	std::wstring caesar(std::wstring phrase);
 	
+	std::wstring encrypt(const std::wstring& phrase, uint64_t encType) override;
+
 	std::vector<GEX> xorStrToGexAsVec(cwstring phrase);
 private:
 	std::wstring gexIdentifier = L"gexInput"; 
